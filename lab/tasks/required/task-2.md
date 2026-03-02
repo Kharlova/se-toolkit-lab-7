@@ -19,12 +19,12 @@ You will discover and fix them by writing tests, then use an AI agent to generat
   - [1.1. Follow the `Git workflow`](#11-follow-the-git-workflow)
   - [1.2. Create a `Lab Task` issue](#12-create-a-lab-task-issue)
   - [1.3. Part A: Run unit tests locally](#13-part-a-run-unit-tests-locally)
-    - [1.3.0. Create the `.env.secret` file](#130-create-the-envsecret-file)
-    - [1.3.1. Run existing unit tests](#131-run-existing-unit-tests)
-    - [1.3.2. Add a new unit test](#132-add-a-new-unit-test)
-    - [1.3.3. Fix the bug](#133-fix-the-bug)
-    - [1.3.4. Rerun unit tests](#134-rerun-unit-tests)
-    - [1.3.5. Commit the fix](#135-commit-the-fix)
+    - [1.3.1. Create the `.env.secret` file](#131-create-the-envsecret-file)
+    - [1.3.2. Run existing unit tests](#132-run-existing-unit-tests)
+    - [1.3.3. Add a new unit test](#133-add-a-new-unit-test)
+    - [1.3.4. Fix the bug](#134-fix-the-bug)
+    - [1.3.5. Rerun unit tests](#135-rerun-unit-tests)
+    - [1.3.6. Commit the fix](#136-commit-the-fix)
   - [1.4. Part B: Run end-to-end tests remotely](#14-part-b-run-end-to-end-tests-remotely)
     - [1.4.1. Redeploy the fixed version](#141-redeploy-the-fixed-version)
     - [1.4.2. Run existing end-to-end tests](#142-run-existing-end-to-end-tests)
@@ -52,10 +52,18 @@ Title: `[Task] Back-end Testing`
 
 ### 1.3. Part A: Run unit tests locally
 
+<!-- no toc -->
+- [1.3.1. Create the `.env.secret` file](#131-create-the-envsecret-file)
+- [1.3.2. Run existing unit tests](#132-run-existing-unit-tests)
+- [1.3.3. Add a new unit test](#133-add-a-new-unit-test)
+- [1.3.4. Fix the bug](#134-fix-the-bug)
+- [1.3.5. Rerun unit tests](#135-rerun-unit-tests)
+- [1.3.6. Commit the fix](#136-commit-the-fix)
+
 > [!NOTE]
 > Unit tests do not require a running server. They test individual functions in isolation.
 
-#### 1.3.0. Create the `.env.secret` file
+#### 1.3.1. Create the `.env.secret` file
 
 1. [Check that the current directory is `se-toolkit-lab-4`](../../../wiki/shell.md#check-the-current-directory-is-directory-name).
 2. To create the `.env.secret` file from the example,
@@ -71,7 +79,7 @@ Title: `[Task] Back-end Testing`
 > The test runner needs it to configure the application settings.
 > The default values in [`.env.example`](../../../.env.example) work out of the box.
 
-#### 1.3.1. Run existing unit tests
+#### 1.3.2. Run existing unit tests
 
 1. To run the existing unit tests,
 
@@ -89,9 +97,9 @@ Title: `[Task] Back-end Testing`
    ===================== 3 passed in X.XXs =====================
    ```
 
-#### 1.3.2. Add a new unit test
+#### 1.3.3. Add a new unit test
 
-> [!NOTE]
+> [!TIP]
 > Feel free to use AI to generate the tests. Make sure to provide them with necessary context.
 
 1. [Open the file](../../../wiki/vs-code.md#open-the-file):
@@ -124,36 +132,36 @@ Title: `[Task] Back-end Testing`
    - The name of the failing test is `test_filter_includes_interaction_with_different_learner_id`.
    - The failed assertion is `assert 0 == 1` — the filter returned 0 interactions, but 1 was expected.
 
-#### 1.3.3. Fix the bug
+#### 1.3.4. Fix the bug
 
 1. [Open the file](../../../wiki/vs-code.md#open-the-file):
    [`backend/app/routers/interactions.py`](../../../backend/app/routers/interactions.py).
 2. Fix the bug in the `_filter_by_item_id` function.
 
-<details><summary>Click to open a hint</summary>
+3. <details><summary>Click to open a hint</summary>
 
-The filter is applied in-memory after all interactions are fetched from the database.
-Look at the condition that decides which interactions to include — it compares the wrong field on the interaction object.
+   The filter is applied in-memory after all interactions are fetched from the database.
+   Look at the condition that decides which interactions to include — it compares the wrong field on the interaction object.
 
-</details>
+   </details>
 
-<details><summary>Click to open the solution</summary>
+4. <details><summary>Click to open the solution</summary>
 
-Find this line in `_filter_by_item_id`:
+   Find this line in `_filter_by_item_id`:
 
-```python
-return [i for i in interactions if i.learner_id == item_id]  # BUG
-```
+   ```python
+   return [i for i in interactions if i.learner_id == item_id]  # BUG
+   ```
 
-Change it to:
+   Change it to:
 
-```python
-return [i for i in interactions if i.item_id == item_id]
-```
+   ```python
+   return [i for i in interactions if i.item_id == item_id]
+   ```
 
-</details>
+   </details>
 
-#### 1.3.4. Rerun unit tests
+#### 1.3.5. Rerun unit tests
 
 1. To rerun the unit tests,
 
@@ -171,7 +179,7 @@ return [i for i in interactions if i.item_id == item_id]
    ===================== 4 passed in X.XXs =====================
    ```
 
-#### 1.3.5. Commit the fix
+#### 1.3.6. Commit the fix
 
 1. [Commit](../../../wiki/git-workflow.md#commit) your changes.
 
@@ -186,8 +194,16 @@ return [i for i in interactions if i.item_id == item_id]
 
 ### 1.4. Part B: Run end-to-end tests remotely
 
+<!-- no toc -->
+- [1.4.1. Redeploy the fixed version](#141-redeploy-the-fixed-version)
+- [1.4.2. Run existing end-to-end tests](#142-run-existing-end-to-end-tests)
+- [1.4.3. Add two end-to-end tests](#143-add-two-end-to-end-tests)
+- [1.4.4. Fix the bug](#144-fix-the-bug)
+- [1.4.5. Redeploy and rerun](#145-redeploy-and-rerun)
+- [1.4.6. Commit the fix](#146-commit-the-fix)
+
 > [!NOTE]
-> End-to-end tests run on your local machine and send real [HTTP](../../../wiki/http.md) requests to the deployed version on the VM.
+> End-to-end tests run on your local machine and send real [`HTTP`](../../../wiki/http.md#what-is-http) requests to the deployed version on the VM.
 
 #### 1.4.1. Redeploy the fixed version
 
@@ -195,7 +211,7 @@ return [i for i in interactions if i.item_id == item_id]
 
 #### 1.4.2. Run existing end-to-end tests
 
-1. Set the required environment variables in the terminal. Complete the following steps:
+1. Set the required environment variables in the terminal. Complete these steps:
 
    1. To set the base URL of your deployed API,
 
@@ -205,15 +221,23 @@ return [i for i in interactions if i.item_id == item_id]
       export API_BASE_URL=http://<your-vm-ip-address>:<caddy-port>
       ```
 
-      Replace [`<your-vm-ip-address>`](../../../wiki/vm.md#your-vm-ip-address) with the IP address of your VM. See [`<caddy-port>`](../../../wiki/caddy.md#caddy-port).
+      Replace:
 
-   2. To set the API token (use the same value as in your `.env.secret`),
+      - [`<your-vm-ip-address>`](../../../wiki/vm.md#your-vm-ip-address)
+      - [`<caddy-port>`](../../../wiki/caddy.md#caddy-port)
+
+   2. To set the API key,
+
+      <!-- TODO use value from .env.docker.secret -->
 
       [run in the `VS Code Terminal`](../../../wiki/vs-code.md#run-a-command-in-the-vs-code-terminal):
 
       ```terminal
-      export API_TOKEN=<your-api-token>
+      export API_KEY=<your-api-key>
       ```
+      <!-- TODO link to section about API_KEY -->
+
+      Replace `<your-api-key>` with the same value as in your `.env.secret` file.
 
 2. To run the end-to-end tests,
 
@@ -237,8 +261,8 @@ return [i for i in interactions if i.item_id == item_id]
    [`backend/tests/e2e/test_interactions.py`](../../../backend/tests/e2e/test_interactions.py).
 2. Add two end-to-end tests that cover the following boundary-value cases:
 
-   - Test 1: `GET /interactions/` returns [HTTP status code](../../../wiki/http.md#http-response-status-code) `200`.
-   - Test 2: `GET /interactions/` response body is a [JSON](../../../wiki/file-formats.md#json) array.
+   - Test 1: `GET /interactions/` returns [`HTTP` status code](../../../wiki/http.md#http-response-status-code) `200`.
+   - Test 2: `GET /interactions/` response body is a [`JSON`](../../../wiki/file-formats.md#json) array.
 
    <details><summary>Click to open the solution</summary>
 
@@ -283,14 +307,14 @@ return [i for i in interactions if i.item_id == item_id]
    [`backend/app/models/interaction.py`](../../../backend/app/models/interaction.py).
 2. Fix the bug in `InteractionModel`.
 
-   <details><summary>Click to open a hint</summary>
+3. <details><summary>Click to open a hint</summary>
 
    The response model has a field whose name does not match the corresponding column in the database.
    When `FastAPI` tries to serialize the database row into the response model, it cannot find the expected field and returns a `500` error.
 
    </details>
 
-   <details><summary>Click to open the solution</summary>
+4. <details><summary>Click to open the solution</summary>
 
    Find this line in `InteractionModel`:
 
@@ -319,6 +343,12 @@ return [i for i in interactions if i.item_id == item_id]
 
 3. All end-to-end tests should pass.
 
+   The output should be similar to this:
+
+   ```terminal
+   ===================== 4 passed in X.XXs =====================
+   ```
+
 #### 1.4.6. Commit the fix
 
 1. [Commit](../../../wiki/git-workflow.md#commit) your changes.
@@ -333,6 +363,12 @@ return [i for i in interactions if i.item_id == item_id]
 > Each fix must be a **separate commit**. Do not combine the Part A and Part B fixes into one commit.
 
 ### 1.5. Part C: Generate tests with an AI agent
+
+<!-- no toc -->
+- [1.5.1. Generate tests](#151-generate-tests)
+- [1.5.2. Review and curate the tests](#152-review-and-curate-the-tests)
+- [1.5.3. Run the full test suite](#153-run-the-full-test-suite)
+- [1.5.4. Commit the curated tests](#154-commit-the-curated-tests)
 
 #### 1.5.1. Generate tests
 

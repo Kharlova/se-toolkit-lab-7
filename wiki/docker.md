@@ -6,6 +6,7 @@
 - [Container](#container)
   - [Why containers are useful](#why-containers-are-useful)
   - [Containers and host](#containers-and-host)
+  - [Container ID](#container-id)
 - [What is `Docker`](#what-is-docker)
 - [Set up `Docker`](#set-up-docker)
   - [Install `Docker`](#install-docker)
@@ -19,9 +20,10 @@
     - [`docker ps` useful variants](#docker-ps-useful-variants)
 - [`Docker Compose`](#docker-compose)
   - [Service](#service)
-- [Volumes](#volumes)
+- [Volume](#volume)
 - [Health checks](#health-checks)
 - [`DockerHub`](#dockerhub)
+  - [`<your-dockerhub-username>`](#your-dockerhub-username)
 
 ## Image
 
@@ -62,6 +64,8 @@ A container is an isolated runtime for an application and its dependencies.
 │ ┄┄┄┄┄┄┄┄┄┄┄┄┄┄ Linux kernel (shared) ┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄ │
 └─────────────────────────────────────────────────────────────────┘
 ```
+
+### Container ID
 
 ## What is `Docker`
 
@@ -104,6 +108,8 @@ If you installed `Docker Desktop`:
    docker stop $(docker ps -q) 2>/dev/null
    ```
 
+   You should see removed [container IDs](#container-id).
+
 2. To remove all stopped containers,
 
    [run in the `VS Code Terminal`](./vs-code.md#run-a-command-in-the-vs-code-terminal):
@@ -112,12 +118,26 @@ If you installed `Docker Desktop`:
    docker container prune -f
    ```
 
+   The output should be empty or similar to this:
+
+   ```terminal
+   ...
+   Total reclaimed space: ...
+   ```
+
 3. To delete unused volumes,
 
    [run in the `VS Code Terminal`](./vs-code.md#run-a-command-in-the-vs-code-terminal):
 
    ```terminal
-   docker volume prune -f
+   docker volume prune -f --all
+   ```
+
+   The output should be similar to this:
+
+   ```terminal
+   ...
+   Total reclaimed space: ...
    ```
 
 ## Common `Docker` commands
@@ -161,7 +181,7 @@ A service is a named entry under the `services:` key in `docker-compose.yml`. It
 
 For example, this project defines four services in [`docker-compose.yml`](../docker-compose.yml): `app`, `postgres`, `pgadmin`, and `caddy`.
 
-## Volumes
+## Volume
 
 A volume is persistent storage managed by `Docker`. Data in a volume survives container restarts.
 
@@ -211,3 +231,7 @@ You can push a locally built image to `DockerHub` so that other machines (such a
 Docs:
 
 - [`DockerHub`](https://hub.docker.com/)
+
+### `<your-dockerhub-username>`
+
+Your [`DockerHub`](#dockerhub) username (without `<` and `>`).

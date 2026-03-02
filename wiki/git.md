@@ -6,9 +6,10 @@
 - [Remote](#remote)
 - [Commit](#commit)
   - [Commit hash](#commit-hash)
+  - [`<git-commit-hash>`](#git-commit-hash)
   - [Commit message](#commit-message)
-    - [`Conventional Commits`](#conventional-commits)
-      - [Common prefixes in `Conventional Commits`](#common-prefixes-in-conventional-commits)
+  - [`Conventional Commits`](#conventional-commits)
+    - [Common commit message prefixes in `Conventional Commits`](#common-commit-message-prefixes-in-conventional-commits)
 - [Revision](#revision)
 - [How `Git` works - text](#how-git-works---text)
 - [How `Git` works - videos](#how-git-works---videos)
@@ -20,6 +21,8 @@
 - [Configure `Git`](#configure-git)
   - [Configure `user.name`](#configure-username)
   - [Configure `user.email`](#configure-useremail)
+
+<!-- TODO improve docs -->
 
 ## What is `Git`
 
@@ -50,10 +53,16 @@ A commit is a snapshot of your project at a specific point in time. Each commit 
 
 A hash of a commit in `Git`.
 
+Example: `4aeacb54f898125560c545e5e0477762094027a7`
+
 Docs:
 
 - [Git Has Integrity](https://git-scm.com/book/en/v2/Git-Tools-Revision-Selection#_git_has_integrity)
 - [Revision Selection - Short SHA-1](https://git-scm.com/book/en/v2/Git-Tools-Revision-Selection#_short_sha_1)
+
+### `<git-commit-hash>`
+
+A [commit hash](#commit-hash) (without `<` and `>`).
 
 ### Commit message
 
@@ -66,7 +75,7 @@ Guidelines:
 - Focus on why the change was made, not just what changed.
 - (Optional) follow the [`Conventional Commits`](#conventional-commits) specification.
 
-#### `Conventional Commits`
+### `Conventional Commits`
 
 Rules for creating human- and machine-readable commit history.
 
@@ -74,7 +83,7 @@ Docs:
 
 - [`Conventional Commits`](https://www.conventionalcommits.org/en/v1.0.0/).
 
-##### Common prefixes in `Conventional Commits`
+#### Common commit message prefixes in `Conventional Commits`
 
 - `feat:` for new functionality.
 - `fix:` for bug fixes.

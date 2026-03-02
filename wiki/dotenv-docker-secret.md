@@ -9,9 +9,9 @@
   - [`APP_CONTAINER_PORT`](#app_container_port)
   - [`APP_HOST_ADDRESS`](#app_host_address)
   - [`APP_HOST_PORT`](#app_host_port)
-  - [`API_TOKEN`](#api_token)
-  - [`ENABLE_INTERACTIONS`](#enable_interactions)
-  - [`ENABLE_LEARNERS`](#enable_learners)
+  - [`APP_ENABLE_INTERACTIONS`](#app_enable_interactions)
+  - [`APP_ENABLE_LEARNERS`](#app_enable_learners)
+  - [`API_KEY`](#api_key)
 - [`postgres`](#postgres)
   - [`POSTGRES_DB`](#postgres_db)
   - [`POSTGRES_USER`](#postgres_user)
@@ -27,10 +27,23 @@
   - [`CADDY_CONTAINER_PORT`](#caddy_container_port)
   - [`CADDY_HOST_ADDRESS`](#caddy_host_address)
   - [`CADDY_HOST_PORT`](#caddy_host_port)
+- [Constants](#constants)
+  - [`CONST_POSTGRESQL_SERVICE_NAME`](#const_postgresql_service_name)
+  - [`CONST_POSTGRESQL_SERVER_NAME`](#const_postgresql_server_name)
+  - [`CONST_POSTGRESQL_DEFAULT_PORT`](#const_postgresql_default_port)
 
 ## What is `.env.docker.secret`
 
 Default values: [`.env.docker.example`](../.env.docker.example)
+
+<!-- TOD improve description -->
+
+> It was added to [`.gitignore`](../../.gitignore) because you may specify there
+> [secrets](../../wiki/environments.md#secrets) such as the API key or the [address of your VM](../../wiki/vm.md#your-vm-ip-address).
+
+> [!TIP]
+> No edits are needed for local development.
+> The default values in [`.env.docker.example`](../../.env.docker.example) work out of the box.
 
 <!-- TODO values are used for deployment using --env-file. replaces values in docker-compose.yml -->
 <!-- TODO explain each variable -->
@@ -67,27 +80,27 @@ Default: `127.0.0.1`
 
 Default: `42001`
 
-### `API_TOKEN`
-
-Default: `my-secret-api-key`
-
-### `ENABLE_INTERACTIONS`
+### `APP_ENABLE_INTERACTIONS`
 
 Feature flag
 
 Default: `true`
 
-### `ENABLE_LEARNERS`
+### `APP_ENABLE_LEARNERS`
 
 Feature flag for enabling the `/learners` endpoint.
 
 Default: `true`
 
+### `API_KEY`
+
+Default: `my-secret-api-key`
+
 ## `postgres`
 
 ### `POSTGRES_DB`
 
-Default: `lab-4`
+Default: `db-lab-4`
 
 ### `POSTGRES_USER`
 
@@ -136,3 +149,17 @@ Default: `0.0.0.0`
 ### `CADDY_HOST_PORT`
 
 Default: `42002`
+
+## Constants
+
+### `CONST_POSTGRESQL_SERVICE_NAME`
+
+Default: `postgres`
+
+### `CONST_POSTGRESQL_SERVER_NAME`
+
+Default: `postgres-lab-4`
+
+### `CONST_POSTGRESQL_DEFAULT_PORT`
+
+Default: `5432`

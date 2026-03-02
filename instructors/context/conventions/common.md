@@ -5,7 +5,7 @@
 - [4.3. Command Palette commands](#43-command-palette-commands)
 - [4.4. Options vs steps](#44-options-vs-steps)
 - [4.5. Ordered lists](#45-ordered-lists)
-- [4.6. Little ToC](#46-little-toc)
+- [4.6. Mini-ToC](#46-mini-toc)
 - [4.7. Table of contents](#47-table-of-contents)
 - [4.8. Links and cross-references](#48-links-and-cross-references)
 - [4.9. Notes, tips, warnings](#49-notes-tips-warnings)
@@ -21,12 +21,15 @@
 - [4.19. Steps with sub-steps](#419-steps-with-sub-steps)
 - [4.20. Placeholders in docs](#420-placeholders-in-docs)
 - [4.21. `docker compose up` commands](#421-docker-compose-up-commands)
+- [4.22. Environment variable references](#422-environment-variable-references)
+- [4.23. Horizontal rules](#423-horizontal-rules)
+- [4.24. Inline paths](#424-inline-paths)
 
 ## 4.1. Instructions wording
 
 - **Navigate somewhere** — `Go to X.`
 - **Click something** — `Click X.`
-- **Choose an option** — `Method N:` prefix (see [4.6](#46-little-toc))
+- **Choose an option** — `Method N:` prefix (see [4.6](#46-mini-toc))
 - **Complete all steps** — `Complete these steps:`
 - **Conditional steps** — `If <condition>, complete these steps:`
 
@@ -89,14 +92,14 @@ Exception: `vs-code.md` itself is exempt because the link would be self-referent
 
 Clearly differentiate:
 
-- **Options:** List with `Method N:` prefix (see [4.6](#46-little-toc)).
-- **Steps:** "Complete the following steps:" (then list steps in order).
+- **Options:** List with `Method N:` prefix (see [4.6](#46-mini-toc)).
+- **Steps:** "Complete these steps:" (then list steps in order).
 
 ## 4.5. Ordered lists
 
 Each ordered list must use `1. 2. 3.`, **not** `1. 1. 1.`.
 
-## 4.6. Little ToC
+## 4.6. Mini-ToC
 
 Provide a little table of contents when the list of options or steps is long. Use `Method N:` prefixes with full heading text as the link:
 
@@ -110,11 +113,12 @@ Provide a little table of contents when the list of options or steps is long. Us
 ### Do X using `GitLens`
 ```
 
-Don't provide a little ToC when all lists of items are short.
+Don't provide a mini-ToC when all lists of items are short.
 
 ## 4.7. Table of contents
 
 - Insert a ToC right after the document title.
+- **Edit body sections first, then update the ToC.** When modifying a document, make all heading and content changes in the body before touching the ToC. This avoids stale or mismatched entries and keeps diffs easier to review.
 - `Markdown All in One` generates and updates the ToC automatically from your headings. Write sections first, then let the extension generate the ToC. Fix any anchor indices (e.g., step numbers) in the ToC afterwards if needed.
 - To skip a section from the ToC, use HTML tags for the title: `<h2>Heading</h2>`.
 - To control which heading levels appear in the ToC, edit `"markdown.extension.toc.levels"` in `.vscode/settings.json`.
@@ -127,6 +131,7 @@ Don't provide a little ToC when all lists of items are short.
 - Provide a link to each file that exists in the repo.
 - Link format for wiki references from tasks: `[concept name](../../../wiki/<file>.md#<section>)`.
 - Tasks can reference steps in other tasks: `[Run the web server](./task-1.md#8-run-the-web-server)`.
+- **Forward references for rationale:** When the reason for a step's placement or structure depends on a future step, link forward to that step. This tells readers *why* the step appears here rather than elsewhere. Example: a "Start creating a VM" step that is intentionally placed early (because provisioning takes time) should link to the later "Continue creating a VM" step where the workflow resumes.
 - **Don't link to the top-level heading** (the `#` title) of a file. Link to a specific subsection instead. The top-level heading is just the document title — linking to it is the same as linking to the file with no anchor. Good: `[Linux](./linux.md#what-is-linux)`. Bad: `[Linux](./linux.md#linux)`.
 - **Compound phrases:** When a tool name and a concept naturally form a single phrase (e.g., `` `GitHub` pull request ``, `` `VS Code` Terminal ``), link the whole phrase to the concept's section rather than creating two adjacent links. Good: `` [`GitHub` pull request](./github.md#pull-request) ``. Bad: `` [`GitHub`](./github.md) [pull request](./github.md#pull-request) ``.
 - **No consecutive links:** Two links next to each other with no plain text between them look like a single link in the rendered preview — the reader can't tell where one ends and the next begins. Reword the sentence so at least one plain-text word separates them. Good: `a [process](…) that [listens on a port](…)`. Bad: `a [process](…) [listens on a port](…)`.
@@ -256,7 +261,9 @@ Create the file `docs.md` with the following sections:
 
 ## 4.18. Inline formatting of technical terms
 
-Wrap tool names, technical terms, and acronyms in backticks: `` `VS Code` ``, `` `Git` ``, `` `Docker` ``, `` `Python` ``, `` `SQL` ``, `` `WSL` ``, `` `SSH` ``.
+Wrap names of tools, languages, formats, and protocols in backticks: `` `VS Code` ``, `` `Git` ``, `` `Docker` ``, `` `Python` ``, `` `SQL` ``, `` `JSON` ``, `` `CSV` ``, `` `SSH` ``, `` `WSL` ``.
+
+Don't backtick acronyms that aren't names: VM, API, URL, ERD.
 
 ## 4.19. Steps with sub-steps
 
@@ -267,6 +274,15 @@ When multiple actions serve a single logical goal, group them under one step. Wr
    1. Open `.env.example`.
    2. Copy it to `.env.secret`.
    3. Fill in the values.
+```
+
+When sub-items describe the behavior of an artifact being created (a workflow, config file, script, etc.) rather than actions the student performs, use "does the following:" instead. Write sub-items in third person to reflect what the artifact does:
+
+```markdown
+1. Add a workflow that does the following on every push to `main`:
+   1. Checks out the repository.
+   2. Runs all back-end unit tests.
+   3. Runs all end-to-end tests.
 ```
 
 When actions don't share a logical goal, flatten them into separate top-level steps (see [4.1. Instructions wording](#41-instructions-wording)).
@@ -281,6 +297,29 @@ Good: `` Open <pgadmin-url> in a browser. ``
 
 When defining a placeholder, clarify that the value does not include `<` and `>` wherever it may not be obvious to the reader. Use the format: ``(without `<` and `>`)`` at the end of the description sentence.
 
+When asking students to replace placeholders, don't repeat inline what the placeholder means if it already links to a section that explains it — the link is enough.
+
+**Multiple placeholders — bullet list:**
+
+~~~markdown
+Replace:
+
+- [`<placeholder-1>`](link-to-explanation)
+- [`<placeholder-2>`](link-to-explanation)
+~~~
+
+**Single placeholder (linked):**
+
+~~~markdown
+Replace [`<placeholder>`](link-to-explanation).
+~~~
+
+**Single placeholder (not linked):**
+
+~~~markdown
+Replace `<placeholder>` with <explanation>.
+~~~
+
 ## 4.21. `docker compose up` commands
 
 Always include the `--build` flag when writing `docker compose up` commands in instructions. This ensures containers are rebuilt from the latest source, preventing students from running stale images.
@@ -288,3 +327,37 @@ Always include the `--build` flag when writing `docker compose up` commands in i
 Good: `docker compose up --build`
 
 Bad: `docker compose up`
+
+## 4.22. Environment variable references
+
+When referencing an environment variable from `.env.docker.secret` in prose, link it to its section in the wiki and link `.env.docker.secret` to indicate the source:
+
+From a wiki file:
+
+```markdown
+[`VARIABLE_NAME`](./dotenv-docker-secret.md#variable_name) in [`.env.docker.secret`](./dotenv-docker-secret.md#what-is-envdockersecret)
+```
+
+From a task file:
+
+```markdown
+[`VARIABLE_NAME`](../../../wiki/dotenv-docker-secret.md#variable_name) in [`.env.docker.secret`](../../../wiki/dotenv-docker-secret.md#what-is-envdockersecret)
+```
+
+Following [4.8](#48-links-and-cross-references), the `.env.docker.secret` link only needs to appear once per section when multiple variables are referenced together.
+
+Exception: variables inside fenced code blocks cannot use markdown links — use plain text there.
+
+## 4.23. Horizontal rules
+
+Use exactly three dashes (`---`) for horizontal rules.
+
+Good: `---`
+
+Bad: `----`, `-----`, `***`, `___`
+
+## 4.24. Inline paths
+
+Use a trailing `/` for directory paths: `` `lab/tasks/` ``, `` `frontend/` ``.
+
+Exception: `..` references do not get a trailing `/`: `` `lab/tasks/..` ``.

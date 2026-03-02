@@ -15,7 +15,8 @@
   - [`Protobuf`](#protobuf)
 - [REST API](#rest-api)
 - [API](#api)
-  - [`<api-token>`](#api-token)
+  - [What is API key](#what-is-api-key)
+  - [`<api-key>`](#api-key)
 - [Endpoint](#endpoint)
 - [Send a `GET` request](#send-a-get-request)
   - [Send a `GET` request using a browser](#send-a-get-request-using-a-browser)
@@ -121,6 +122,8 @@ Example:
 
 ## API
 
+<!-- TODO move to separate doc -->
+
 An API (`Application Programming Interface`) is a set of rules that lets programs communicate with each other.
 
 A web API exposes [endpoints](#endpoint) that clients can call over `HTTP`.
@@ -129,7 +132,11 @@ Docs:
 
 - [An introduction to APIs: A comprehensive guide](https://zapier.com/blog/api/)
 
-### `<api-token>`
+### What is API key
+
+<!-- TODO -->
+
+### `<api-key>`
 
 The value that you use to authenticate in the API.
 

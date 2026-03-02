@@ -18,6 +18,7 @@
   - [Open the `Query Tool`](#open-the-query-tool)
   - [Run the query](#run-the-query)
   - [Copy the query data output](#copy-the-query-data-output)
+  - [Save to file the query data output](#save-to-file-the-query-data-output)
 - [`ERD Tool`](#erd-tool)
   - [Open the ERD for the database](#open-the-erd-for-the-database)
   - [View the ERD in crow's foot notation](#view-the-erd-in-crows-foot-notation)
@@ -33,7 +34,9 @@ Docs:
 
 ## `<pgadmin-port>`
 
-The value of [`PGADMIN_HOST_PORT` in `.env.docker.secret`](./dotenv-docker-secret.md#pgadmin_host_port) that you used to run the `pgadmin` [service](./docker.md#service).
+The [port number](./computer-networks.md#port-number) (without `<` and `>`) which `pgAdmin` [listens on](./computer-networks.md#listen-on-a-port).
+
+The port number is the value of [`PGADMIN_HOST_PORT`](./dotenv-docker-secret.md#pgadmin_host_port) in [`.env.docker.secret`](./dotenv-docker-secret.md#what-is-envdockersecret).
 
 ## Open `pgAdmin`
 
@@ -69,14 +72,18 @@ Actions:
 2. Right-click `Servers` in the left panel.
 3. Click `Register` -> `Server...`.
 4. In the `General` tab:
-   - `Name`: the value of [`POSTGRES_SERVER_NAME`](./constants.md#postgresql-server-name-in-pgadmin).
+   - `Name`: the value of [`CONST_POSTGRESQL_SERVER_NAME`](./dotenv-docker-secret.md#const_postgresql_server_name).
 5. In the `Connection` tab:
-   - `Host name/address`: the value of the [`PostgreSQL` service name](./constants.md#postgresql-service-name-in-docker-compose) (see [`Docker Compose` networking](./docker-compose.md#docker-compose-networking)).
-   - `Port`: The value of the [default `PostgreSQL` port](./constants.md#default-postgresql-port).
+   - `Host name/address`: the value of [`CONST_POSTGRESQL_SERVICE_NAME`](./dotenv-docker-secret.md#const_postgresql_service_name) (see [`Docker Compose` networking](./docker-compose.md#docker-compose-networking)).
+   - `Port`: the value of [`CONST_POSTGRESQL_DEFAULT_PORT`](./dotenv-docker-secret.md#const_postgresql_default_port).
    - `Maintenance database`: the value of [`POSTGRES_DB`](./dotenv-docker-secret.md#postgres_db).
    - `Username`: the value of [`POSTGRES_USER`](./dotenv-docker-secret.md#postgres_user).
    - `Password`: the value of [`POSTGRES_PASSWORD`](./dotenv-docker-secret.md#postgres_password).
 6. Click `Save`.
+
+   You should see the server in the [`Object Explorer`](./pgadmin.md#object-explorer):
+
+   <img alt="Object explorer and server" src="./images/pgadmin/object-explorer-server.png" style="width:300px">
 
 ### Delete the `PostgreSQL` server
 
@@ -206,6 +213,19 @@ Actions:
 4. Click `Copy` to copy the full table to the clipboard.
 
    <img alt="Data Output - select all" src="./images/pgadmin/data-output-copy.png" style="width:400px">
+
+### Save to file the query data output
+
+> [!NOTE]
+> The `<db-name>` is the name of the database that you run the [`SQL` query](./sql.md#sql-query) against.
+
+1. [Run the query against the database `<db-name>`](#run-the-query).
+2. Open the `Data Output` tab.
+3. Click `Save results to file`.
+
+   <img alt="Data output - save results to file" src="./images/pgadmin/data-output-save-results-to-file.png" style="width:400px">
+
+   A comma-separated [`CSV`](./file-formats.md#csv) file should be downloaded.
 
 ## `ERD Tool`
 
