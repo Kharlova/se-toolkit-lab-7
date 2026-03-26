@@ -6,6 +6,9 @@ This handler calls the LMS backend API to check system health.
 import httpx
 from services.api_client import get_api_client
 
+import httpx
+from services.api_client import get_api_client
+
 
 def handle_health() -> str:
     """Handle /health command.

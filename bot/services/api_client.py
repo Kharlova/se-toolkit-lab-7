@@ -61,6 +61,102 @@ class LMSAPIClient:
         response.raise_for_status()
         return response.json()
 
+    def get_learners(self) -> list:
+        """Get list of enrolled learners.
+
+        Returns:
+            List of learners.
+
+        Raises:
+            httpx.RequestError: If the request fails.
+        """
+        client = self._get_client()
+        response = client.get("/learners/")
+        response.raise_for_status()
+        return response.json()
+
+    def get_analytics_scores(self, lab: str) -> list:
+        """Get score distribution for a lab.
+
+        Args:
+            lab: Lab identifier
+
+        Returns:
+            List of score distribution data.
+        """
+        client = self._get_client()
+        response = client.get("/analytics/scores", params={"lab": lab})
+        response.raise_for_status()
+        return response.json()
+
+    def get_analytics_timeline(self, lab: str) -> list:
+        """Get submissions timeline for a lab.
+
+        Args:
+            lab: Lab identifier
+
+        Returns:
+            List of timeline data.
+        """
+        client = self._get_client()
+        response = client.get("/analytics/timeline", params={"lab": lab})
+        response.raise_for_status()
+        return response.json()
+
+    def get_analytics_groups(self, lab: str) -> list:
+        """Get per-group performance for a lab.
+
+        Args:
+            lab: Lab identifier
+
+        Returns:
+            List of group data.
+        """
+        client = self._get_client()
+        response = client.get("/analytics/groups", params={"lab": lab})
+        response.raise_for_status()
+        return response.json()
+
+    def get_analytics_top_learners(self, lab: str, limit: int = 5) -> list:
+        """Get top learners for a lab.
+
+        Args:
+            lab: Lab identifier
+            limit: Number of top learners
+
+        Returns:
+            List of top learners.
+        """
+        client = self._get_client()
+        response = client.get("/analytics/top-learners", params={"lab": lab, "limit": limit})
+        response.raise_for_status()
+        return response.json()
+
+    def get_analytics_completion_rate(self, lab: str) -> dict:
+        """Get completion rate for a lab.
+
+        Args:
+            lab: Lab identifier
+
+        Returns:
+            Completion rate data.
+        """
+        client = self._get_client()
+        response = client.get("/analytics/completion-rate", params={"lab": lab})
+        response.raise_for_status()
+        return response.json()
+
+    def trigger_sync(self) -> dict:
+        """Trigger ETL sync.
+
+        Returns:
+            Sync result.
+        """
+        client = self._get_client()
+        response = client.post("/pipeline/sync", json={})
+        response.raise_for_status()
+        return response.json()
+
     def health_check(self) -> dict:
         """Check backend health by fetching items.
         
