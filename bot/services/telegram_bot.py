@@ -72,7 +72,7 @@ async def scores_command_handler(message: types.Message) -> None:
 async def callback_query_handler(callback_query: types.CallbackQuery) -> None:
     """Handle inline button callbacks."""
     action = callback_query.data
-    
+
     if action == "labs":
         response = handle_labs()
     elif action == "health":
@@ -84,7 +84,7 @@ async def callback_query_handler(callback_query: types.CallbackQuery) -> None:
         response = handle_scores(lab)
     else:
         response = "Unknown action."
-    
+
     await callback_query.message.edit_text(response)
 
 
@@ -93,11 +93,11 @@ async def text_message_handler(message: types.Message) -> None:
     user_message = message.text
     if not user_message:
         return
-    
+
     # Check if it's a command (starts with /)
     if user_message.startswith("/"):
         return  # Commands are handled separately
-    
+
     # Process as natural language query
     response = handle_text_message(user_message)
     await message.reply(response)

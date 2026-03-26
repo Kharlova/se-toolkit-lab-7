@@ -6,7 +6,9 @@
       "Bash(rm *)",
       "Bash(uv *)",
       "Bash(git add *)",
-      "Bash(git push *)"
+      "Bash(git push *)",
+      "Bash(git cherry-pick *)",
+      "Bash(git checkout *)"
     ]
   }
 }

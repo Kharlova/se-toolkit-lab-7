@@ -46,13 +46,13 @@ class LMSAPIClient:
 
     def get_analytics_pass_rates(self, lab: str) -> list:
         """Get pass rates for a specific lab.
-
+        
         Args:
             lab: Lab identifier (e.g., "lab-04")
-
+            
         Returns:
             List of pass rate data.
-
+            
         Raises:
             httpx.RequestError: If the request fails.
         """

@@ -1,4 +1,10 @@
-"""Handler for /health command."""
+"""Handler for /health command.
+
+This handler calls the LMS backend API to check system health.
+"""
+
+import httpx
+from services.api_client import get_api_client
 
 import httpx
 from services.api_client import get_api_client
