@@ -95,3 +95,88 @@ By the end of this lab, you should be able to say:
 ### Optional
 
 1. [Flutter Web Chatbot](./lab/tasks/optional/task-1.md)
+
+## Deploy
+
+### Prerequisites
+
+Before deploying, ensure you have:
+
+1. **VM with backend running** — backend, postgres, caddy services
+2. **`.env.docker.secret`** configured with:
+   - `BOT_TOKEN` — Telegram bot token from @BotFather
+   - `LMS_API_KEY` — Backend API key
+   - `LLM_API_BASE_URL` — LLM proxy URL (e.g., `http://host.docker.internal:42005/v1` or `http://localhost:42005/v1` on VM)
+   - `LLM_API_KEY` — LLM API key
+   - `LLM_API_MODEL` — Model name (e.g., `coder-model`)
+
+3. **`.env.bot.secret`** for local testing (same values as above)
+
+### Deploy on VM
+
+1. **Stop the background bot process** (if running):
+   ```terminal
+   pkill -f "bot.py" 2>/dev/null
+   ```
+
+2. **Pull latest changes**:
+   ```terminal
+   cd ~/se-toolkit-lab-7
+   git pull
+   ```
+
+3. **Build and start all services**:
+   ```terminal
+   docker compose --env-file .env.docker.secret up --build -d
+   ```
+
+4. **Verify services are running**:
+   ```terminal
+   docker compose --env-file .env.docker.secret ps
+   ```
+   
+   You should see `bot` service alongside `backend`, `postgres`, `caddy`.
+
+5. **Check bot logs**:
+   ```terminal
+   docker compose --env-file .env.docker.secret logs bot --tail 30
+   ```
+   
+   Look for:
+   - "Bot started!" — successful startup
+   - "Polling started" — connected to Telegram
+   - No Python tracebacks
+
+### Verify in Telegram
+
+Send these commands to your bot:
+
+| Message | Expected Response |
+|---------|------------------|
+| `/start` | Welcome message with inline keyboard |
+| `/health` | "🟢 Backend is healthy. X items available." |
+| `/labs` | List of available labs |
+| `/scores lab-04` | Pass rates for lab-04 tasks |
+| "what labs are available?" | Natural language response with lab list |
+| "which lab has the lowest pass rate?" | Multi-step analysis with comparison |
+
+### Troubleshooting
+
+| Symptom | Solution |
+|---------|----------|
+| Bot container restarting | Check logs: `docker compose logs bot`. Usually missing env var or import error. |
+| `/health` fails | `LMS_API_BASE_URL` must be `http://backend:8000` (not `localhost`). Inside Docker, `localhost` is the container itself. |
+| LLM queries fail | `LLM_API_BASE_URL` may need `host.docker.internal` instead of `localhost` to reach the Qwen proxy on a different network. |
+| "BOT_TOKEN is required" | Add `BOT_TOKEN` to `.env.docker.secret`. |
+| Build fails at `uv sync` | Ensure `uv.lock` exists and is copied in Dockerfile. |
+
+### Local Testing
+
+Before deploying, test locally:
+
+```terminal
+cd bot
+uv sync
+uv run bot.py --test "/start"
+uv run bot.py --test "what labs are available"
+```

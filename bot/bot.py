@@ -4,6 +4,7 @@
 Usage:
     uv run bot.py              # Start Telegram bot
     uv run bot.py --test "/start"  # Test mode (no Telegram connection)
+    uv run bot.py --test "what labs are available"  # Natural language query
 """
 
 import argparse
@@ -13,14 +14,15 @@ from handlers.help import handle_help
 from handlers.health import handle_health
 from handlers.labs import handle_labs
 from handlers.scores import handle_scores
+from handlers.intent_router import route_intent
 
 
 def get_handler_response(command: str) -> str:
     """Route command to appropriate handler.
-    
+
     Args:
         command: The command string (e.g., "/start", "/help", "/scores lab-04")
-    
+
     Returns:
         Response text from the handler.
     """
@@ -43,12 +45,21 @@ def get_handler_response(command: str) -> str:
 
 def test_mode(command: str) -> None:
     """Run bot in test mode - print response to stdout.
-    
+
     Args:
-        command: The command to test (e.g., "/start")
+        command: The command to test (e.g., "/start" or natural language query)
     """
-    response = get_handler_response(command)
+    # Check if it's a natural language query (doesn't start with /)
+    if not command.startswith("/"):
+        response = route_intent(command)
+    else:
+        response = get_handler_response(command)
+    
     print(response)
+    # Close API client to clean up connections
+    from services.api_client import get_api_client
+    client = get_api_client()
+    client.close()
     sys.exit(0)
 
 
@@ -68,9 +79,9 @@ def main() -> None:
         test_mode(args.test)
         return
     
-    # Normal mode: start Telegram bot (not implemented yet)
-    print("Telegram bot mode not implemented yet. Use --test for testing.")
-    sys.exit(0)
+    # Normal mode: start Telegram bot
+    from services.telegram_bot import start_telegram_bot
+    start_telegram_bot()
 
 
 if __name__ == "__main__":
