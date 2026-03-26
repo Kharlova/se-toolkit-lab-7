@@ -2,7 +2,6 @@
 name = "lms-telegram-bot"
 version = "0.1.0"
 description = "Telegram bot for LMS backend"
-readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "aiogram>=3.0.0",
@@ -10,6 +9,5 @@ dependencies = [
     "python-dotenv>=1.0.0",
 ]
 
-[build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
+[tool.uv]
+dev-dependencies = []

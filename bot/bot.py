@@ -43,12 +43,16 @@ def get_handler_response(command: str) -> str:
 
 def test_mode(command: str) -> None:
     """Run bot in test mode - print response to stdout.
-    
+
     Args:
         command: The command to test (e.g., "/start")
     """
     response = get_handler_response(command)
     print(response)
+    # Close API client to clean up connections
+    from services.api_client import get_api_client
+    client = get_api_client()
+    client.close()
     sys.exit(0)
 
 
@@ -68,9 +72,9 @@ def main() -> None:
         test_mode(args.test)
         return
     
-    # Normal mode: start Telegram bot (not implemented yet)
-    print("Telegram bot mode not implemented yet. Use --test for testing.")
-    sys.exit(0)
+    # Normal mode: start Telegram bot
+    from services.telegram_bot import start_telegram_bot
+    start_telegram_bot()
 
 
 if __name__ == "__main__":
