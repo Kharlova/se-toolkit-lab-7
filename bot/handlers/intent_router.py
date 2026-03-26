@@ -1,4 +1,7 @@
-"""Intent router using LLM for natural language queries."""
+"""Intent router using LLM for natural language queries.
+
+The router uses tool calling to let the LLM decide which API endpoints to call.
+"""
 
 import json
 import logging
